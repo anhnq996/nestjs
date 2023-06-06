@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { IsNotEmpty, IsString } from 'class-validator';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { IsNotEmpty } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 
 export class LoginDto {

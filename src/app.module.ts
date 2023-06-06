@@ -11,9 +11,12 @@ import {
   AcceptLanguageResolver,
   HeaderResolver,
 } from 'nestjs-i18n';
+import { roles } from './app.roles';
+import { AccessControlModule } from 'nest-access-control';
 
 @Module({
   imports: [
+    AccessControlModule.forRoles(roles),
     ConfigModule.forRoot({
       envFilePath: join(__dirname, '..', '.env'),
     }),
