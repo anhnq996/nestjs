@@ -6,7 +6,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './models/User.entity';
-import { I18nModule, QueryResolver, AcceptLanguageResolver, HeaderResolver } from "nestjs-i18n";
+import {
+  I18nModule,
+  AcceptLanguageResolver,
+  HeaderResolver,
+} from 'nestjs-i18n';
 
 @Module({
   imports: [

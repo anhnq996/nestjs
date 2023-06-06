@@ -1,4 +1,5 @@
 {
   "S1000": "Xử lý thành công",
-  "E1000": "Thất bại"
+  "E1000": "Thất bại",
+  "E1001": "Có lỗi khi xác thực dữ liệu"
 }

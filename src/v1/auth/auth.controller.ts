@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Body, Res, UseFilters } from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, UseFilters, Response } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AppService } from '../../app.service';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { LoginDto } from './dto/login.dto';
-import { I18nValidationExceptionFilter } from 'nestjs-i18n';
 import { HandlerFilter } from '../../exceptions/handler.filter';
 
 @UseFilters(HandlerFilter)
