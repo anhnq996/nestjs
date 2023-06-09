@@ -1,22 +1,29 @@
-'use strict';
-
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config();
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const bcrypt = require('bcrypt');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    const password = 'Gmo12345';
+    const appKey = process.env.APP_KEY;
+    const hash = await bcrypt.hash(`${password}_${appKey}`, 10);
     // Add your seeder logic here
     await queryInterface.bulkInsert(
       'users',
       [
         {
           name: 'Anh Ngo',
-          password: 'gmo12345',
+          username: 'admin',
+          password: hash,
           email: 'anhnq1@example.com',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
           name: 'Jane Smith',
-          password: 'gmo12345',
+          username: 'Anh Ngo',
+          password: hash,
           email: 'jane@example.com',
           createdAt: new Date(),
           updatedAt: new Date(),

@@ -2,10 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { UserRepository } from '../../repositories/User.repository';
 import { LoginDto } from './dto/login.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { User } from '@models/User.entity';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    @InjectModel(User)
+    private userModel: typeof User,
+    private readonly userRepository: UserRepository,
+  ) {}
   login(loginDto: LoginDto) {
     return 'This action adds a new auth';
   }
@@ -24,5 +30,12 @@ export class AuthService {
 
   remove(id: number) {
     return `This action removes a #${id} auth`;
+  }
+
+  async findUserByUsername(username: string) {
+    return this.userModel.findOne({
+      where: { username },
+      attributes: { exclude: ['password'] },
+    });
   }
 }

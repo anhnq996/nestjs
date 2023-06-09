@@ -1,5 +1,5 @@
 import { Model, Table, Column, DataType } from 'sequelize-typescript';
-
+import Role from '@enums/role.enum';
 @Table({ tableName: 'users' })
 export class User extends Model<User> {
   @Column({ primaryKey: true, autoIncrement: true })
@@ -7,6 +7,9 @@ export class User extends Model<User> {
 
   @Column(DataType.STRING)
   name: string;
+
+  @Column(DataType.STRING)
+  username: string;
 
   @Column(DataType.STRING)
   password: string;

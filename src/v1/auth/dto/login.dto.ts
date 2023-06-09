@@ -12,7 +12,7 @@ export class LoginDto {
       attribute: 'attribute.username',
     }),
   })
-  name: string;
+  username: string;
 
   @IsNotEmpty({
     message: i18nValidationMessage('validation.required', {
