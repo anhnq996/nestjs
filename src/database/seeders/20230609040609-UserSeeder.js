@@ -2,14 +2,30 @@
 require('dotenv').config();
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     const password = 'Gmo12345';
     const appKey = process.env.APP_KEY;
     const hash = await bcrypt.hash(`${password}_${appKey}`, 10);
-    // Add your seeder logic here
-    await queryInterface.bulkInsert(
+    let roles = await queryInterface.select(
+      null,
+      'roles',
+      {
+        where: {
+          name: { [Sequelize.Op.in]: ['Admin', 'User'] },
+        },
+      },
+      ['id'],
+    );
+    let roleByName = {};
+
+    roles.map((role) => {
+      roleByName[role.name] = role.id;
+    });
+
+    let adminId = await queryInterface.bulkInsert(
       'users',
       [
         {
@@ -20,6 +36,22 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+      ],
+      {
+        returning: true,
+      },
+    );
+
+    await queryInterface.insert(null, 'user_has_roles', {
+      role_id: roleByName.Admin,
+      user_id: adminId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    let userId = await queryInterface.bulkInsert(
+      'users',
+      [
         {
           name: 'Jane Smith',
           username: 'Anh Ngo',
@@ -29,8 +61,17 @@ module.exports = {
           updatedAt: new Date(),
         },
       ],
-      {},
+      {
+        returning: true,
+      },
     );
+
+    await queryInterface.insert(null, 'user_has_roles', {
+      role_id: roleByName.User,
+      user_id: userId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
   },
 
   async down(queryInterface, Sequelize) {

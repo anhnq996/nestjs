@@ -1,5 +1,7 @@
 {
   "S1000": "Xử lý thành công",
   "E1000": "Thất bại",
-  "E1001": "Có lỗi khi xác thực dữ liệu"
+  "E1001": "Có lỗi khi xác thực dữ liệu",
+  "E1002": "Sai tài khoản hoặc mật khẩu",
+  "E1003": "Phiên đăng nhập không hợp lệ"
 }

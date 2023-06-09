@@ -5,7 +5,7 @@ import { AuthModule } from './v1/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { User } from './models/User.entity';
+import { UserModel } from '@models/User.model';
 import {
   I18nModule,
   AcceptLanguageResolver,
@@ -13,10 +13,14 @@ import {
 } from 'nestjs-i18n';
 import { roles } from './app.roles';
 import { AccessControlModule } from 'nest-access-control';
+import { JwtModule } from '@nestjs/jwt';
+import { UserModule } from './v1/admin/user/user.module';
+import { UserHasRoleModel } from '@models/UserHasRole.model';
+import { RoleModel } from '@models/Role.model';
+import { PermissionModel } from '@models/Permission.model';
 
 @Module({
   imports: [
-    AccessControlModule.forRoles(roles),
     ConfigModule.forRoot({
       envFilePath: join(__dirname, '..', '.env'),
     }),
@@ -38,9 +42,15 @@ import { AccessControlModule } from 'nest-access-control';
       username: new ConfigService().get('DB_USERNAME'),
       password: new ConfigService().get('DB_PASSWORD'),
       database: new ConfigService().get('DB_DATABASE'),
-      models: [User],
+      models: [UserModel, UserHasRoleModel, RoleModel, PermissionModel],
+    }),
+    JwtModule.register({
+      global: true,
+      secret: new ConfigService().get('JWT_SECRET'),
+      signOptions: { expiresIn: new ConfigService().get('JWT_EXPIRES') },
     }),
     AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

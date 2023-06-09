@@ -1,12 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IsNotEmpty } from 'class-validator';
 import { i18nValidationMessage } from 'nestjs-i18n';
 
-export class LoginDto {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+export class LoginRequest {
   @IsNotEmpty({
     message: i18nValidationMessage('validation.required', {
       attribute: 'attribute.username',

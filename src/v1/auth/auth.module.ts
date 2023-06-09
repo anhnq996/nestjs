@@ -3,12 +3,13 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { ConfigService } from '@nestjs/config';
 import { UserRepository } from '../../repositories/User.repository';
-import { User } from '../../models/User.entity';
+import { UserModel } from '@models/User.model';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AppService } from '../../app.service';
+import { UserHasRoleModel } from '@models/UserHasRole.model';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User])],
+  imports: [SequelizeModule.forFeature([UserModel, UserHasRoleModel])],
   controllers: [AuthController],
   providers: [ConfigService, UserRepository, AuthService, AppService],
 })

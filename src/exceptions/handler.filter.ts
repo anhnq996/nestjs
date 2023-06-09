@@ -3,14 +3,16 @@ import {
   Catch,
   ExceptionFilter,
   HttpStatus,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { Response, Request } from 'express';
+import { Request, Response } from 'express';
 import { I18nService, I18nValidationException } from 'nestjs-i18n';
 import { isNotEmpty } from 'class-validator';
+import { ConfigService } from "@nestjs/config";
 
-@Catch(I18nValidationException)
+@Catch()
 export class HandlerFilter implements ExceptionFilter {
-  constructor(private readonly i18n: I18nService) {}
+  constructor(private readonly i18n: I18nService, private readonly configService: ConfigService) {}
 
   async transformError(constraint, lang) {
     const message = constraint.split('|');
@@ -25,32 +27,39 @@ export class HandlerFilter implements ExceptionFilter {
     }
     return this.i18n.t(message[0], { args: args, lang });
   }
-  async catch(exception: I18nValidationException, host: ArgumentsHost) {
+  async catch(exception, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const lang = request.header('lang');
-    const statusCode = HttpStatus.BAD_REQUEST;
-    const validationErrors = exception.errors;
-    const errorMessages = {};
+    let errorMessages = null;
+    let code = 'E1001';
+    let statusCode = HttpStatus.BAD_REQUEST;
+    console.log(exception);
+    if (exception instanceof I18nValidationException) {
+      const validationErrors = exception.errors;
+      errorMessages = {};
+      await Promise.all(
+        Object.values(validationErrors).map(async (error: any) => {
+          const constraints = Object.values(error.constraints);
+          errorMessages[error.property] = await Promise.all(
+            constraints.map(
+              async (constraint: string) =>
+                await this.transformError(constraint, lang),
+            ),
+          );
+        }),
+      );
+    } else if (exception instanceof UnauthorizedException) {
+      code = 'E1003';
+      statusCode = HttpStatus.UNAUTHORIZED;
+    }
 
-    await Promise.all(
-      Object.values(validationErrors).map(async (error: any) => {
-        const constraints = Object.values(error.constraints);
-        errorMessages[error.property] = await Promise.all(
-          constraints.map(
-            async (constraint: string) =>
-              await this.transformError(constraint, lang),
-          ),
-        );
-      }),
-    );
-
-    const code = 'E1001';
     response.status(statusCode).json({
       code: code,
       message: this.i18n.t(`response.${code}`),
       errors: errorMessages,
+      debug: this.configService.get('APP_DEBUG') ? exception.message : null,
     });
   }
 }
