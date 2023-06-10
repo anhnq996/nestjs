@@ -11,8 +11,6 @@ import { LoginRequest } from './requests/login.request';
 import { response } from '@helpers/utils.helpers';
 import { I18nService } from 'nestjs-i18n';
 import RoleGuard from '../../providers/role.guard';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 
 @Controller({
   version: '1',

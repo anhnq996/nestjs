@@ -10,6 +10,7 @@ export function response(res: Response, i18n, data, code, status = 200): void {
   // @ts-ignore
   return res.status(status).json(response);
 }
+
 export async function hash(plainText, salt = 10): Promise<string> {
   const appKey = process.env.APP_KEY;
   return bcrypt.hash(`${plainText}_${appKey}`, salt);

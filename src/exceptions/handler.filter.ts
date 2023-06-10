@@ -8,11 +8,14 @@ import {
 import { Request, Response } from 'express';
 import { I18nService, I18nValidationException } from 'nestjs-i18n';
 import { isNotEmpty } from 'class-validator';
-import { ConfigService } from "@nestjs/config";
+import { ConfigService } from '@nestjs/config';
 
 @Catch()
 export class HandlerFilter implements ExceptionFilter {
-  constructor(private readonly i18n: I18nService, private readonly configService: ConfigService) {}
+  constructor(
+    private readonly i18n: I18nService,
+    private readonly configService: ConfigService,
+  ) {}
 
   async transformError(constraint, lang) {
     const message = constraint.split('|');
