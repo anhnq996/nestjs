@@ -22,6 +22,7 @@
       "@enums/*": ["./src/enums/*"],
       "@models/*": ["src/models/*"],
       "@helpers/*": ["src/common/helpers/*"],
+      "@providers/*": ["src/providers/*"]
     }
   }
 }

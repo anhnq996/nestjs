@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query, Res, Response, UseGuards } from '@nestjs/common';
+import { Controller, Get, Inject, Post, Query, Res, Response, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { response } from '@helpers/utils.helpers';
 import { UserListRequest } from './requests/list.request';
@@ -7,6 +7,7 @@ import { AuthGuard } from '../../../providers/auth.guard';
 import { PermissionGuard } from '../../../providers/permission.guard';
 import { ApiBearerAuth, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import UserResource from '../../auth/resources/login.resource';
+import { LogService } from '../../../providers/services/logger.service';
 
 @Controller({
     version: '1',

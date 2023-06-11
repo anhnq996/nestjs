@@ -6,6 +6,7 @@
 /.config
 /node_modules
 /vendor
+/logs
 .env*
 .phpunit.result.cache
 .bash_*

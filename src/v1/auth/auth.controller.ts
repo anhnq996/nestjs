@@ -3,8 +3,8 @@ import { AuthService } from './auth.service';
 import { LoginRequest } from './requests/login.request';
 import { response } from '@helpers/utils.helpers';
 import { I18nService } from 'nestjs-i18n';
-import RoleGuard from '../../providers/role.guard';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import RoleGuard from '@providers/role.guard';
 
 @Controller({
     version: '1',
